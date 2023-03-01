@@ -8,36 +8,36 @@ import util.Liste;
 * disjoncteur dans le projet.
 *
 * On y retrouve les constantes et les  sous-programmes
-* lié à un disjoncteur.
+* liï¿½ ï¿½ un disjoncteur.
 * 
-* Implémente l'interface Serializable pour la sauvegarde
+* Implï¿½mente l'interface Serializable pour la sauvegarde
 * dans un fichier binaire. 
 * 
-* @suthor Pierre Bélisle
+* @suthor Pierre Bï¿½lisle
 * @version Copyright H2023
 */
 public class Disjoncteur implements Serializable{
 
 	/**
-	 * Enlève un "warning". On ne gère pas les versions.
+	 * Enlï¿½ve un "warning". On ne gï¿½re pas les versions.
 	 */
 	private static final long serialVersionUID = 1L;
 	
 	
-    // État possible d'un disjoncteur.
+    // ï¿½tat possible d'un disjoncteur.
 	public static final int ALLUME = 1;
 	public static final int ETEINT = 0;
 	
-	// Choix d'ampérages possibles.
+	// Choix d'ampï¿½rages possibles.
 	private static final int MIN_AMPERAGE = 15;
 	private static final int MAX_AMPERAGE = 60;
 	
 
-	// Tous les ampérages permis dans un tableau.  
+	// Tous les ampï¿½rages permis dans un tableau.  
 	public static final int AMPERAGES_PERMIS[] =
 		                               {MIN_AMPERAGE, 20, 40, 50, MAX_AMPERAGE};
 
-	// Construction d'une chaîne avec les ampérages permis. Sert à valider.
+	// Construction d'une chaï¿½ne avec les ampï¿½rages permis. Sert ï¿½ valider.
 	public static final  String CHAINE_AMPERAGE_PERMIS = 
 			"15/20/40/50/60";
 	
@@ -45,7 +45,7 @@ public class Disjoncteur implements Serializable{
 	public static final int TENSION_ENTREE = 240;
 	public static final int TENSION_PHASE = 120;
 
-	// Construction d'une chaîne avec les tensions permises. Sert à valider.
+	// Construction d'une chaï¿½ne avec les tensions permises. Sert ï¿½ valider.
 	public static final  String CHAINE_TENSION_PERMISE = 
 			"120/240";
 	
@@ -65,11 +65,12 @@ public class Disjoncteur implements Serializable{
     private int etat;
     
     
-    // VOUS DEVEZ ÉCRIRE LES COMMENTAIRES JAVADOC AUSSI
+    // VOUS DEVEZ ï¿½CRIRE LES COMMENTAIRES JAVADOC AUSSI
 
-	public Disjoncteur() {
-	
-		// TODO Auto-generated constructor stub
+	public Disjoncteur(double ampere, double tension) {
+		this.ampere = ampere;
+		this.tension = tension;
+		
 	}
 
 	public double getAmpere() {
