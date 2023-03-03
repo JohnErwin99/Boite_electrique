@@ -2,19 +2,19 @@ package modele;
 import java.io.Serializable;
 
 /*
-* Module qui permet la gestion d'une boîte électrique
+* Module qui permet la gestion d'une boï¿½te ï¿½lectrique
 * avec disjoncteurs.
 *
-* La boite doit d'abord être initialisée au nombre d'ampères voulus 
+* La boite doit d'abord ï¿½tre initialisï¿½e au nombre d'ampï¿½res voulus 
 * ainsi que son nombre de disjoncteurs maximum possibles.
 *
-* Implémente l'interface Serializable pour la sauvegarde
+* Implï¿½mente l'interface Serializable pour la sauvegarde
 * dans un fichier binaire. 
 */
 public class Boite implements Serializable{
 	
 	/**
-	 * Enlève un "warning". On ne gère pas les versions.
+	 * Enlï¿½ve un "warning". On ne gï¿½re pas les versions.
 	 */
 	private static final long serialVersionUID = 1L;
 	
@@ -28,7 +28,7 @@ public class Boite implements Serializable{
 	public static final int NB_LIGNES_MAX  = 
 			MAX_DISJONCTEURS/NB_COLONNES;
 	
-	// Pour le remplissage de départ.
+	// Pour le remplissage de dï¿½part.
     public static final double POURC_REMPLI = 0.6;
 	public static final double POURC_TENSION_ENTREE = .3;
 	
@@ -40,47 +40,51 @@ public class Boite implements Serializable{
 	 *********************************/
 	private int maxAmperes;
 	
-	// Le tableau est 2D mais il est à l'envers de la réalité (ligne-colonne).
-	// Toutes les méthodes qui nécessitent la position, reçoivent 
-	// une coordonnée (colonne-ligne).  
+	// Le tableau est 2D mais il est ï¿½ l'envers de la rï¿½alitï¿½ (ligne-colonne).
+	// Toutes les mï¿½thodes qui nï¿½cessitent la position, reï¿½oivent 
+	// une coordonnï¿½e (colonne-ligne).  
 	private Disjoncteur[][] tabDisjoncteurs;	
 	private int nbDisjoncteurs;
 	
-	// On déduit les disjoncteurs TENSION_ENTREE par
+	// On dï¿½duit les disjoncteurs TENSION_ENTREE par
 	// nbDisjoncteurs - nbDisjoncteursPhase  
 	private int nbDisjoncteursPhase;
+    Disjoncteur d;
+	Coord coord;
+
+
 	
-	
-	// Vous devez écrire les méthodes manquantes.
+	// Vous devez ï¿½crire les mï¿½thodes manquantes.
 	
 	public Boite(int max_amperes) {
 	
-	    // À écrire
+	    d = new Disjoncteur(2, 5);
+		coord = new Coord();
 
 	}
 
 	/**
-	 * @return La consommation totale en Watts de la boîte.
+	 * @return La consommation totale en Watts de la boï¿½te.
 	 */
 	public double getConsommationTotalEnWatt(){
 	
 
 	    double  total = 0;
 	    
-	    // À écrire
+	    // ï¿½ ï¿½crire
 	    
 	    return total;
 
 	}
 
 	/**
-	 * @return la puissance totale consommée sur les disjoncteurs. 
+	 * @return la puissance totale consommï¿½e sur les disjoncteurs. 
 	 */
 	public double puissance_total_boite(){
 		
 	    double total = 0;
 	    
-	    // À écrire
+	    // ï¿½ ï¿½crire
 
 	    return total;
 
@@ -92,21 +96,21 @@ public class Boite implements Serializable{
 	 */
 	public double temps_ups(){
 
-	    // À écrire
+	    // ï¿½ ï¿½crire
 
 	    return 0;
 	}
 
 	public boolean getEmplacementEncoreDisponible() {
 	
-	    // À écrire
+	    // ï¿½ ï¿½crire
 
 		return false;
 	}
 
 	public Disjoncteur getDisjoncteur(int j, int i) {
 	
-	    // À écrire
+	    // ï¿½ ï¿½crire
 
 		return new Disjoncteur();
 	}
@@ -114,71 +118,92 @@ public class Boite implements Serializable{
 
 	public int getMaxAmperes() {
 	
-	    // À écrire
+	    // ï¿½ ï¿½crire
 
 		return 0;
 	}
 
 	public void remplirAlea() {
 	
-	    // À écrire
+	    // ï¿½ ï¿½crire
 
 		
 	}
 
 
-	public Coord getEmplacementDisponible() {
-	
-	    // À écrire
-
-		return null;
+	public Coord getEmplacementDisponible() {	 
+	//srearch algorithm, search empty space
+	 int row = -1;
+	 int col = -1;
+	 for (int i = 0; i < tabDisjoncteurs.length; i++) {
+	    for (int j = 0; j < tabDisjoncteurs[i].length; j++) {
+	        if (tabDisjoncteurs[i][j] == null) {
+	            row = i;
+	            col = j;
+	            //return the coord of the empty space
+	            coord.setColonne(col);
+	            coord.setLigne(row);
+	            break;
+	        }
+	    }
+	    if (row != -1 && col != -1) {
+	        break;
+	    }
+	 }
+	 return coord;
 	}
 
 	public void ajouterDisjoncteur(int colonne, int ligne, Disjoncteur d) {
 	
-	    // À écrire
+		// add the object to the first empty space
+        if (!getEmplacementDisponible().equals(coord)) {
+        	 tabDisjoncteurs[ligne][colonne] = d;
+            System.out.println("Added object to row " + colonne + ", column " + ligne);
+        } else {
+            System.out.println("Array is full, could not add object");
+        }
+		
+		
 
 		
 	}
 
 	public void ajouterDemande(int i, int j, double demande) {
 	
-	    // À écrire
+	    // ï¿½ ï¿½crire
 
 		
 	}
 
 	public void retirerPuissance(int i, int j, double demande) {
 	
-	    // À écrire
+	    // ï¿½ ï¿½crire
 
 		
 	}
 
 	public int getNbDisjoncteurs() {
 	
-	    // À écrire
-
 		return 0;
 	}
 
 	public int getNbDisjoncteursPhase() {
 	
-	    // À écrire
+	    // ï¿½ ï¿½crire
 
 		return 0;
 	}
 
 	public int getNbDisjoncteursEntree() {
 	
-	    // À écrire
+	    // ï¿½ ï¿½crire3
 
 		return 0;
 	}
 
 	public boolean getEmplacementEstVide(int colonne, int ligne) {
 	
-	    // À écrire
+	    // ï¿½ ï¿½crire
 
 		return false;
 	}

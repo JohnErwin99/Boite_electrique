@@ -1,5 +1,6 @@
 package modele;
 import java.io.Serializable;
+import java.util.*;
 
 import util.Liste;
 
@@ -59,49 +60,145 @@ public class Disjoncteur implements Serializable{
     private double tension;
 
 	// Une liste qui contient les demandes (charge) sur le circuit.
-	private Liste demandeDuCircuit;
+	LinkedList<Double> demandeDuCircuit;
+
 	
 	// ALLUME ou ETEINT.	
     private int etat;
     
+    public Disjoncteur() {
+		demandeDuCircuit = new LinkedList<Double>();
+	}
     
     // VOUS DEVEZ �CRIRE LES COMMENTAIRES JAVADOC AUSSI
 
 	public Disjoncteur(double ampere, double tension) {
-		this.ampere = ampere;
-		this.tension = tension;
+		this.ampere = setAmpere(ampere);
+		this.tension = setTension(tension);
+		
+		etat = ETEINT;
+		demandeDuCircuit = new LinkedList<Double>();
 		
 	}
 
 	public double getAmpere() {
 	
-		// TODO Auto-generated method stub
-		return 0;
+		return ampere;
+	}
+	//valide si lampere est permise. return lampere ou return 0.
+	public double setAmpere(double ampere) {
+		boolean trouve = false;
+		int index = -1;
+		for (int i = 0; i < AMPERAGES_PERMIS.length; i++) {
+            if (Double.compare(ampere, AMPERAGES_PERMIS[i]) == 0) {	
+                trouve = true;
+                index = i;
+                break;
+            }
+        }
+
+        // print the result of the search
+        if (trouve) {
+            System.out.println(ampere + " est permis ");
+            return ampere;
+        } else {
+            System.out.println(ampere + " non permis ");
+            return ampere;
+        }
 	}
 
 	public int getTension() {
 	
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return (int)tension;
+	}
+	//valide si la tension est permise. return la tension ou return 0.
+	public int setTension(double tension) {
+		boolean trouve = false;
+		String [] arraysplit = CHAINE_TENSION_PERMISE.split("/");
+		int index = -1;
+		for (int i = 0; i < arraysplit.length; i++) {
+            if (Double.compare(tension, Double.parseDouble(arraysplit[i])) == 0) {
+                trouve = true;
+                index = i;
+                break;
+            }
+        }
+
+        // print the result of the search
+        if (trouve) {
+            System.out.println(tension + " est permis ");
+            return (int)tension;
+        } else {
+            System.out.println(tension + " non permis ");
+            return 0;
+        }
 	}
 
 	public double getPuissanceEnWatt() {
+		
+		return ((ampere * tension) * 0.80);
+	}
 	
-		// TODO Auto-generated method stub
-		return 0;
+	public double setPuissanceEnWatt(double ampere, double tension) {
+		this.ampere = setAmpere(ampere);
+		this.tension = setTension(tension);
+		if((ampere * tension) * 0.80 >= getMaxPuissanceEnWatt()){
+			return 0;
+		}
+		return (this.ampere * this.tension) * 0.80;
+	}
+	//Calcule la puissance en watts maximale
+	public double getMaxPuissanceEnWatt() {
+		return ((MAX_AMPERAGE * TENSION_ENTREE) * 0.80);
 	}
 
 	public int getEtat() {
 	
-		// TODO Auto-generated method stub
-		return 0;
+		return etat;
 	}
 
+	
 	public double getRatio() {
 	
-		// TODO Auto-generated method stub
-		return 0;
+		//puissance consomme / puissance total possible
+		return getPuissanceEnWatt() / getMaxPuissanceEnWatt();
 	}
-    
+	
+	//ajouter une puissance au disjoncteur
+	public void ajouterDemande(double puissance) {
+		demandeDuCircuit.addFirst(puissance);
+		
+		if((demandeDuCircuit.getFirst() / tension) / 0.80 > MAX_AMPERAGE) {
+			etat = ETEINT;
+		}
+		else if(Double.compare(puissance, 0) == 0 || Double.compare(tension, 0) == 0 || Double.compare(ampere, 0) == 0) {
+			
+			System.out.println("ampere ou tension egal 0");
+			retirerDemande(puissance);
+			etat = ETEINT;
+		}
+		else if((demandeDuCircuit.getFirst() / tension) / 0.80 < 0) {
+			System.out.println("ampere negatif");
+			retirerDemande(puissance);
+			
+		}
+		else if((demandeDuCircuit.getFirst() / tension) / 0.80 < MAX_AMPERAGE && demandeDuCircuit.getFirst() != 0) {
+			etat = ALLUME;
+		}
+	}
+	public void retirerDemande(double puissance) {
+		// Verifier si la demande peut etre retirer. -15, on retire 15. -60 on retire 60.
+		Iterator<Double> iterator = demandeDuCircuit.iterator();
+		{
+			while (iterator.hasNext()) {
+			    Double num = iterator.next();
+			    if(Double.compare(Math.abs(puissance), num) == 0) {
+			    	iterator.remove();
+			    }
+			}
+		}
+	}
+   
 }
     
