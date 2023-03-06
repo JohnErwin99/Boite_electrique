@@ -6,22 +6,37 @@ public class boite_et_disjonteur_tester {
 
 		LinkedList<Disjoncteur> listedisjoncteur = new LinkedList<>();
 		//test disjoncteur:
-		Disjoncteur d = new Disjoncteur() 
+		Disjoncteur d = new Disjoncteur(240); 
+		System.out.println("Ajoute " );
+		d.ajouterDemande(14400);
+		System.out.println("ampere du disjoncteur: " + d.getAmpere());
+		System.out.println("tension du disjoncteur: " + d.getTension());
+		System.out.println("puissance disjoncteur: " + d.getPuissanceEnWatt());
+		System.out.println("etat : " + d.getEtat());
+		System.out.print("Longueur d'un circuit: " + d.demandeDuCircuit.size() + "\n");
 		{
 
 			/**
 			 * 
 			 */
-			private static final long serialVersionUID = 1L;
+			final long serialVersionUID = 1L;
 			
 		};
 		
-		Boite boitedisjoncteur = new Boite(400);
+		/*Boite boitedisjoncteur = new Boite(400);
 		System.out.println("ampere Max de la boite electrique: " + boitedisjoncteur.getMaxAmperes());
 		System.out.println("nombre de disjonteur : " + boitedisjoncteur.getNbDisjoncteurs());
-		System.out.println("disjoncteur coordonne : " + boitedisjoncteur.());
+ 		boitedisjoncteur.getEmplacementDisponible();
 
-		boitedisjoncteur.ajouterDisjoncteur(0, 0, d);
+		//boitedisjoncteur.ajouterDemande(0, 5, demande);
+ 		
+		boitedisjoncteur.ajouterDisjoncteur(1, 5, d);
+		System.out.println("Emplacement diponible apres l'ajout d'un disjoncteur");
+ 		boitedisjoncteur.getEmplacementDisponible();
+
+		System.out.println("Ajout dune puissance aux disjoncteur ");
+		boitedisjoncteur.ajouterDemande(1, 5, 3300);*/
+
 
 
 		//Disjoncteur r = new Disjoncteur(-15, 240);

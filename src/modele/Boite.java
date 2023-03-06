@@ -1,5 +1,6 @@
 package modele;
 import java.io.Serializable;
+import java.util.*;
 
 /*
 * Module qui permet la gestion d'une bo�te �lectrique
@@ -51,6 +52,7 @@ public class Boite implements Serializable {
 	private int nbDisjoncteursPhase;
     Disjoncteur d;
 	Coord coord;
+	ArrayList<Coord> coordoneeVide  = new ArrayList<>();
 
 
 	
@@ -58,12 +60,14 @@ public class Boite implements Serializable {
 	
 	public Boite(int max_amperes) {
 	
-	    d = new Disjoncteur(15, 120);
-		coord = new Coord();
+	    
 		this.maxAmperes = max_amperes;
 		this.nbDisjoncteurs = 0;
         this.nbDisjoncteursPhase = 0;
-        this.tabDisjoncteurs = new Disjoncteur[2][NB_LIGNES_MAX];
+        this.tabDisjoncteurs = new Disjoncteur[NB_LIGNES_MAX][NB_LIGNES_MAX];
+        
+        d = new Disjoncteur();
+		coord = new Coord();
 
 	}
 
@@ -137,48 +141,100 @@ public class Boite implements Serializable {
 	}
 
 
-	public Coord getEmplacementDisponible() {	 
-	//srearch algorithm, search empty space
-	 int row = -1;
-	 int col = -1;
-	 for (int i = 0; i < coord.getLigne(); i++) {
-	    for (int j = 0; j < coord.getColonne(); j++) {
-	        if (tabDisjoncteurs[i][j] == null) {
-	            row = i;
-	            col = j;
-	            break;
-	        }
-	    }
-	    if (row != -1 && col != -1) {
-	        break;
-	    }
-	 }
-	 return coord;
+	public Coord getEmplacementDisponible() {		
+		
+		//srearch algorithm, search empty space
+		 int ligne = -1;
+		 int colonne = -1;
+		 for (int i = 0; i < NB_LIGNES_MAX; i++) {
+		    for (int j = 0; j < NB_COLONNES; j++) {
+		        if (tabDisjoncteurs[i][j] != null) {
+		        	//ligne = i;
+		        	//colonne = j;
+		        	
+		        	//emplacementVide.setLigne(ligne);
+			    	//emplacementVide.setColonne(colonne);	
+					 //System.out.println(emplacementVide.getLigne());
+					 //System.out.println(emplacementVide.getColonne());
+					// System.out.println(ligne);
+					// System.out.println(colonne);
+
+
+		        }
+		        else {
+		        	Coord emplacementVide = new Coord();
+					 emplacementVide.setLigne(i);
+					 emplacementVide.setColonne(j);
+					 System.out.println("Space available " + emplacementVide.getLigne() + " " + 						emplacementVide.getColonne());
+					 coordoneeVide.add(emplacementVide);
+		        }
+		    }
+		    if (ligne != -1 && colonne != -1) {
+		        break;
+		    }
+		 }
+		 return coordoneeVide.get(0);
+		}
+
+	public void ajouterDisjoncteur(int colonne, int ligne, Disjoncteur d) {	
+		//utiliser classe coord pour les coordonnes de la boite
+		Coord ajouterDisjoncteur = new Coord();
+		ajouterDisjoncteur.setLigne(ligne);
+		ajouterDisjoncteur.setColonne(colonne);
+		
+		// on aoute lobjet a la position voulu et on regarde si l'emplacement est vide avant d'ajouter.
+		System.out.println(coordoneeVide.isEmpty());
+		if(coordoneeVide.isEmpty()) {
+			System.out.println("La boit est vide");
+		}
+		else {
+			for(int i = 0; i < coordoneeVide.size(); i++) {
+				if(coordoneeVide.get(i).getLigne() == ajouterDisjoncteur.getLigne() 
+						&& coordoneeVide.get(i).getColonne() == ajouterDisjoncteur.getColonne()) 
+				{
+					//a enlever
+					//System.out.println("Position: " + coordoneeVide.get(i).getLigne() + " : " + 					//coordoneeVide.get(i).getColonne() );
+					
+					//ajouter le disjoncteur a la boite apres vlidation
+					tabDisjoncteurs[ajouterDisjoncteur.getLigne()][ajouterDisjoncteur.getColonne()] = d;
+				}
+			}
+		}
+	
 	}
 
-	public void ajouterDisjoncteur(int colonne, int ligne, Disjoncteur d) {
-	
-		coord.setColonne(colonne);
-		coord.setLigne(ligne);
+	public void ajouterDemande(int colonne, int ligne, double demande) {
+		Coord ajouterDemande = new Coord();
+		ajouterDemande.setLigne(ligne);
+		ajouterDemande.setColonne(colonne);
 		
-		// add the object to the first empty space
-        if (!getEmplacementDisponible().equals(coord)) {
-        	 tabDisjoncteurs[ligne][colonne] = d;
-            System.out.println("Added object to row " + colonne + ", column " + ligne);
-            nbDisjoncteurs++;
-        } else {
-            System.out.println("Array is full, could not add object");
-        }
-		
-		
+		if(coordoneeVide.isEmpty()) {
+			System.out.println("La boite est vide");
+		}
+		else {
+			for(int i = 0; i < coordoneeVide.size(); i++) {
+				//verifie si la position a ajouter la demande est vide ou pas
+				if(coordoneeVide.get(i).getLigne() == ajouterDemande.getLigne() 
+						&& coordoneeVide.get(i).getColonne() == ajouterDemande.getColonne()) 
+				{
+					System.out.println("Position: " + coordoneeVide.get(i).getLigne() + " : " + 					coordoneeVide.get(i).getColonne() );
+					
+					//ajouter le disjoncteur a la boite apres vlidation
+					//information du disjoncteur, A ENLEVER
+					d.ajouterDemande(demande);
+					System.out.println("ampere: " + d.getAmpere());
+					System.out.println("tension: " + d.getTension());
+					System.out.println("etat: " + d.getEtat());
 
-		
-	}
-
-	public void ajouterDemande(int i, int j, double demande) {
-	
-	    // � �crire
-
+					System.out.println("puissance: " + d.getPuissanceEnWatt());
+				
+					
+				}
+				else {
+					System.out.println("Position: " + coordoneeVide.get(i).getLigne() + " : " + 					coordoneeVide.get(i).getColonne()+ " EST NULLE, rien ne se passe..." );
+				}
+			}
+		}
 		
 	}
 

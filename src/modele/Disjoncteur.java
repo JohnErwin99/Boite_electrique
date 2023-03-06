@@ -69,6 +69,10 @@ public class Disjoncteur implements Serializable{
     public Disjoncteur() {
 		demandeDuCircuit = new LinkedList<Double>();
 	}
+    public Disjoncteur(double tension) {
+    	this.tension = setTension(tension);
+		demandeDuCircuit = new LinkedList<Double>();
+	}
     
     // VOUS DEVEZ �CRIRE LES COMMENTAIRES JAVADOC AUSSI
 
@@ -103,7 +107,7 @@ public class Disjoncteur implements Serializable{
             return ampere;
         } else {
             System.out.println(ampere + " non permis ");
-            return ampere;
+            return 0;
         }
 	}
 
@@ -167,9 +171,12 @@ public class Disjoncteur implements Serializable{
 	
 	//ajouter une puissance au disjoncteur
 	public void ajouterDemande(double puissance) {
-		demandeDuCircuit.addFirst(puissance);
 		
-		if((demandeDuCircuit.getFirst() / tension) / 0.80 > MAX_AMPERAGE) {
+		demandeDuCircuit.addFirst(puissance);		
+		ampere = setAmpere((demandeDuCircuit.getFirst() / tension) / 0.80);
+
+		
+		if(ampere > MAX_AMPERAGE) {
 			etat = ETEINT;
 		}
 		else if(Double.compare(puissance, 0) == 0 || Double.compare(tension, 0) == 0 || Double.compare(ampere, 0) == 0) {
@@ -178,12 +185,12 @@ public class Disjoncteur implements Serializable{
 			retirerDemande(puissance);
 			etat = ETEINT;
 		}
-		else if((demandeDuCircuit.getFirst() / tension) / 0.80 < 0) {
+		else if(ampere < 0) {
 			System.out.println("ampere negatif");
 			retirerDemande(puissance);
 			
 		}
-		else if((demandeDuCircuit.getFirst() / tension) / 0.80 < MAX_AMPERAGE && demandeDuCircuit.getFirst() != 0) {
+		else if(ampere < MAX_AMPERAGE && demandeDuCircuit.getFirst() != 0) {
 			etat = ALLUME;
 		}
 	}
