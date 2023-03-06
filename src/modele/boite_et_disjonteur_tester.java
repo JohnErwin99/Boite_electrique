@@ -15,10 +15,19 @@ public class boite_et_disjonteur_tester {
 			private static final long serialVersionUID = 1L;
 			
 		};
+		
+		Boite boitedisjoncteur = new Boite(400);
+		System.out.println("ampere Max de la boite electrique: " + boitedisjoncteur.getMaxAmperes());
+		System.out.println("nombre de disjonteur : " + boitedisjoncteur.getNbDisjoncteurs());
+		System.out.println("disjoncteur coordonne : " + boitedisjoncteur.());
+
+		boitedisjoncteur.ajouterDisjoncteur(0, 0, d);
+
+
 		//Disjoncteur r = new Disjoncteur(-15, 240);
 
 		
-		listedisjoncteur.addFirst(d);
+		/*listedisjoncteur.addFirst(d);
 		//listedisjoncteur.addFirst(r);
 		
 		System.out.println("Ajoute " );
@@ -34,6 +43,8 @@ public class boite_et_disjonteur_tester {
 		
 		System.out.println("Ajoute ");
 		d.ajouterDemande(d.setPuissanceEnWatt(15, 280));
+		System.out.println("ampere du disjoncteur: " + d.getAmpere());
+		System.out.println("tension du disjoncteur: " + d.getTension());
 		System.out.println("etat : " + d.getEtat());
 		System.out.println("Puissance disjoncteur : " + d.getPuissanceEnWatt());
 		System.out.print("Longueur d'un circuit: " + d.demandeDuCircuit.size() + "\n");
@@ -41,6 +52,8 @@ public class boite_et_disjonteur_tester {
 		//ajouter une puissance au disjoncteur:
 		System.out.println("Ajoute ");
 		d.ajouterDemande(d.setPuissanceEnWatt(50, 100));
+		System.out.println("ampere du disjoncteur: " + d.getAmpere());
+		System.out.println("tension du disjoncteur: " + d.getTension());
 		System.out.println("etat : " + d.getEtat());
 		System.out.println("Puissance disjoncteur : " + d.getPuissanceEnWatt());
 		System.out.print("Longueur d'un circuit: " + d.demandeDuCircuit.size() + "\n");
@@ -49,6 +62,8 @@ public class boite_et_disjonteur_tester {
 		//ajouter une puissance negative au disjoncteur:
 		System.out.println("Ajoute");
 		d.ajouterDemande(d.setPuissanceEnWatt(5, 240));
+		System.out.println("ampere du disjoncteur: " + d.getAmpere());
+		System.out.println("tension du disjoncteur: " + d.getTension());
 		System.out.println("etat : " + d.getEtat());
 		System.out.println("Puissance disjoncteur : " + d.getPuissanceEnWatt());
 		System.out.print("Longueur d'un circuit: " + d.demandeDuCircuit.size() + "\n");
@@ -56,6 +71,8 @@ public class boite_et_disjonteur_tester {
 		//ajouter une puissance au disjoncteur:
 		System.out.println("Ajoute");
 		d.ajouterDemande(d.setPuissanceEnWatt(80, 120));
+		System.out.println("ampere du disjoncteur: " + d.getAmpere());
+		System.out.println("tension du disjoncteur: " + d.getTension());
 		System.out.println("etat : " + d.getEtat());
 		System.out.println("Puissance disjoncteur : " + d.getPuissanceEnWatt());
 		System.out.print("Longueur d'un circuit: " + d.demandeDuCircuit.size());
@@ -69,7 +86,7 @@ public class boite_et_disjonteur_tester {
 		
 		
 		/*System.out.println("\n");
-		//On ajoute une deuxieme puissance au meme Disjoncteur
+		//On ajoute un deuxiem disjoncteur
 		System.out.println("ampere du disjoncteur: " + r.getAmpere());
 		System.out.println("tension du disjoncteur: " + r.getTension());
 		System.out.println("max puissance: " + r.getMaxPuissanceEnWatt());

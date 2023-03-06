@@ -11,7 +11,7 @@ import java.io.Serializable;
 * Impl�mente l'interface Serializable pour la sauvegarde
 * dans un fichier binaire. 
 */
-public class Boite implements Serializable{
+public class Boite implements Serializable {
 	
 	/**
 	 * Enl�ve un "warning". On ne g�re pas les versions.
@@ -58,8 +58,12 @@ public class Boite implements Serializable{
 	
 	public Boite(int max_amperes) {
 	
-	    d = new Disjoncteur(2, 5);
+	    d = new Disjoncteur(15, 120);
 		coord = new Coord();
+		this.maxAmperes = max_amperes;
+		this.nbDisjoncteurs = 0;
+        this.nbDisjoncteursPhase = 0;
+        this.tabDisjoncteurs = new Disjoncteur[2][NB_LIGNES_MAX];
 
 	}
 
@@ -67,29 +71,31 @@ public class Boite implements Serializable{
 	 * @return La consommation totale en Watts de la bo�te.
 	 */
 	public double getConsommationTotalEnWatt(){
-	
-
-	    double  total = 0;
-	    
-	    // � �crire
-	    
-	    return total;
-
-	}
+		int consommation = 0;
+        for (int i = 0; i < tabDisjoncteurs.length; i++) {
+            for (int j = 0; j < tabDisjoncteurs[i].length; j++) {
+                if (tabDisjoncteurs[i][j] != null) {
+                	consommation += tabDisjoncteurs[i][j].getAmpere() * 0.80;
+                }
+            }
+        }
+        return consommation;
+	  }
 
 	/**
 	 * @return la puissance totale consomm�e sur les disjoncteurs. 
 	 */
 	public double puissance_total_boite(){
-		
-	    double total = 0;
-	    
-	    // � �crire
-
-	    return total;
-
+		int puissanceConsommee = 0;
+        for (int i = 0; i < tabDisjoncteurs.length; i++) {
+            for (int j = 0; j < tabDisjoncteurs[i].length; j++) {
+                if (tabDisjoncteurs[i][j] != null) {
+                	puissanceConsommee += tabDisjoncteurs[i][j].getPuissanceEnWatt();
+                }
+            }
+        }
+        return puissanceConsommee;
 	}
-
 	/*
 	 * 
 	 * @return  Le temps de support de la charge.
@@ -120,7 +126,7 @@ public class Boite implements Serializable{
 	
 	    // � �crire
 
-		return 0;
+		return maxAmperes;
 	}
 
 	public void remplirAlea() {
@@ -135,14 +141,11 @@ public class Boite implements Serializable{
 	//srearch algorithm, search empty space
 	 int row = -1;
 	 int col = -1;
-	 for (int i = 0; i < tabDisjoncteurs.length; i++) {
-	    for (int j = 0; j < tabDisjoncteurs[i].length; j++) {
+	 for (int i = 0; i < coord.getLigne(); i++) {
+	    for (int j = 0; j < coord.getColonne(); j++) {
 	        if (tabDisjoncteurs[i][j] == null) {
 	            row = i;
 	            col = j;
-	            //return the coord of the empty space
-	            coord.setColonne(col);
-	            coord.setLigne(row);
 	            break;
 	        }
 	    }
@@ -155,10 +158,14 @@ public class Boite implements Serializable{
 
 	public void ajouterDisjoncteur(int colonne, int ligne, Disjoncteur d) {
 	
+		coord.setColonne(colonne);
+		coord.setLigne(ligne);
+		
 		// add the object to the first empty space
         if (!getEmplacementDisponible().equals(coord)) {
         	 tabDisjoncteurs[ligne][colonne] = d;
             System.out.println("Added object to row " + colonne + ", column " + ligne);
+            nbDisjoncteurs++;
         } else {
             System.out.println("Array is full, could not add object");
         }
@@ -184,7 +191,7 @@ public class Boite implements Serializable{
 
 	public int getNbDisjoncteurs() {
 	
-		return 0;
+		return nbDisjoncteurs;
 	}
 
 	public int getNbDisjoncteursPhase() {
