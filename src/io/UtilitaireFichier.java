@@ -1,15 +1,19 @@
 package io;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 /**
  * Classe utilitaire qui permet de sauvegarder dans un fichier binaire ou texte.
- * Elle permet aussi de récupérer une boite.
+ * Elle permet aussi de rï¿½cupï¿½rer une boite.
  *
- * @Author Pierre Bélisle
+ * @Author Pierre Bï¿½lisle
  * @version H2023
  */
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -21,52 +25,77 @@ import modele.Boite;
 
 public class UtilitaireFichier {
 
-	// Permet d'écrire dans un fichier texte en colonne et l'ouvrir dans Excel.
-	// Il suffit d'écrire un TAB pour changer de colonne.
+	// Permet d'ï¿½crire dans un fichier texte en colonne et l'ouvrir dans Excel.
+	// Il suffit d'ï¿½crire un TAB pour changer de colonne.
 	private static final String TAB = "\t";
 
 	/**
-	 * Sauvegarde la boîte dans un fichier texte dont on reçoit le nom.
+	 * Sauvegarde la boï¿½te dans un fichier texte dont on reï¿½oit le nom.
 	 * 
 	 */
-	public static void sauvegarderDsFichierTexte(Boite boite, String nomFic){
+	public static void sauvegarderDsFichierTexte(Boite boite, String nomFic, int ligne, int colonne){
 
-		// À Écrire
-
+		try {
+            
+            FileWriter fw = new FileWriter(nomFic, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write("Nombre max d'ampere de la boite: " + boite.getMaxAmperes()+"\n" +
+            		"Le temp de LUPS: " + boite.temps_ups() + "\n" + "la puissance totale consomme: " + boite.getConsommationTotalEnWatt() + 
+            		"\nle ratio est de: " + boite.getRatio(ligne, colonne));
+            bw.newLine();
+            bw.close();
+            
+			System.out.println("Les donnees de la boite ont ete sauvegarder avec succes");
+ 
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+		
 	}
 
 	
 
 	/**
-	 * Sauvegarde la boîte dans le fichier fichier binaire avec le nom reçu.
+	 * Sauvegarde la boï¿½te dans le fichier fichier binaire avec le nom reï¿½u.
 	 * 
-	 * On présume le nom de fichier valide.
+	 * On prï¿½sume le nom de fichier valide.
 	 * 
-	 * @param nomFic où sauvegarder la boîte.
-	 * @param boite La boîte à sauvegarder.
+	 * @param nomFic oï¿½ sauvegarder la boï¿½te.
+	 * @param boite La boï¿½te ï¿½ sauvegarder.
 	 */
 	public static void sauvegarderBoite(Boite boite, String nomFic){
 
-		// À Écrire
+		// ï¿½ ï¿½crire
 
 	}
 	
 	/**
-	 * Ouvre le fichier dont le nom correspond à celui reçu.
+	 * Ouvre le fichier dont le nom correspond ï¿½ celui reï¿½u.
 	 * 
-	 * Exception : Le fichier doit contenir une boîte sauvegarder par
-	 * la méthode sauvegarderBoite.
+	 * Exception : Le fichier doit contenir une boï¿½te sauvegarder par
+	 * la mï¿½thode sauvegarderBoite.
 	 * 
-	 * @param nomFic Le nom du fichier à ouvrir
-	 * @return La boîte contenu dans le fichier.
+	 * @param nomFic Le nom du fichier ï¿½ ouvrir
+	 * @return La boï¿½te contenu dans le fichier.
 	 */
 	public static Boite recupererBoite(String nomFic){
 
 		Boite boite = null;
 
-		// À Écrire
-
-		
+		 try {
+	            FileReader reader = new FileReader(nomFic);
+	            BufferedReader bufferedReader = new BufferedReader(reader);
+	 
+	            String line;
+	 
+	            while ((line = bufferedReader.readLine()) != null) {
+	                System.out.println(line);
+	            }
+	            reader.close();
+	 
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
 		return boite;
 	}
 }

@@ -1,9 +1,9 @@
 package io;
 /*
- * Module utilitaire permettant la saisie au clavier à l'aide de boîte de
+ * Module utilitaire permettant la saisie au clavier ï¿½ l'aide de boï¿½te de
  * dialogue.
  *
- * @Author Pierre Bélisle
+ * @Author Pierre Bï¿½lisle
  * @version H2023
 */
 
@@ -15,13 +15,32 @@ public class UtilitaireEntreeSortie {
 
 
 	/*
-	 * Fonction locale pour saisir et valider l'ampérage d'un disjoncteur. 
+	 * Fonction locale pour saisir et valider l'ampï¿½rage d'un disjoncteur. 
 	 */
-	public static int ampereValide() {
+	public static int ampereValide(Double ampere) {
 
-		// À Écrire
+		//J'ai setampere qui valide les ampere deja dans la classe disjoncteur. 
+		Disjoncteur d = new Disjoncteur();		
+		//return (int)d.setAmpere(ampere);
 		
-		return 0;
+		boolean trouve = false;
+		int index = -1;
+		for (int i = 0; i < d.AMPERAGES_PERMIS.length; i++) {
+            if (Double.compare(ampere, d.AMPERAGES_PERMIS[i]) == 0) {	
+                trouve = true;
+                index = i;
+                break;
+            }
+        }
+
+        // print the result of the search
+        if (trouve) {
+            System.out.println(ampere + " est permis ");
+            return (int)ampere;
+        } else {
+            System.out.println(ampere + " non permis ");
+            return 0;
+        }
 	}
 
 	/*
@@ -30,14 +49,14 @@ public class UtilitaireEntreeSortie {
 	public static int tensionValide() {
 		
 		/*
-		 * Stratégie : On utilise JOptionPane pour la saisie et les constantes 
-		 * prévues.
+		 * Stratï¿½gie : On utilise JOptionPane pour la saisie et les constantes 
+		 * prï¿½vues.
 		 */
 		
 		// JOptionPane retourne un String.
 		String tension;
 
-		// Utilisé pour la validation avec les String.
+		// Utilisï¿½ pour la validation avec les String.
 		String tensionEntree =  String.valueOf(Disjoncteur.TENSION_ENTREE) ;
 		String tensionPhase =  String.valueOf(Disjoncteur.TENSION_PHASE) ;
 
@@ -59,7 +78,7 @@ public class UtilitaireEntreeSortie {
 	 * si l'utilisateur annule.
 	 * 
 	 * 
-	 * @param msgSollic Le message affiché.
+	 * @param msgSollic Le message affichï¿½.
 	 * @param min La plus petite valeur permise.
 	 * @param max La plus grande valeur permise.
 	 * 
@@ -69,7 +88,7 @@ public class UtilitaireEntreeSortie {
 
 		String entier = null;
 
-		// Version String des valeurs reçues.
+		// Version String des valeurs reï¿½ues.
 		String minString =  String.valueOf(min) ;
 		String maxString =  String.valueOf(max) ;
 
@@ -78,7 +97,7 @@ public class UtilitaireEntreeSortie {
 					JOptionPane.showInputDialog(msgSollic + 
 							" entre " + minString + " et " + maxString);
 
-			// Vérifier si c'est convertissable en entier.
+			// Vï¿½rifier si c'est convertissable en entier.
 			try{
 				
 				if(entier != null){
@@ -99,11 +118,11 @@ public class UtilitaireEntreeSortie {
 	}
 
 	/**
-	 * Saisit et valide un réel entre min et max.  
+	 * Saisit et valide un rï¿½el entre min et max.  
 	 * La fonction retourne Double.NaN si l'utilisateur annule.
 	 * 
 	 * 
-	 * @param msgSollic Le message affiché.
+	 * @param msgSollic Le message affichï¿½.
 	 * @param min La plus petite valeur permise.
 	 * @param max La plus grande valeur permise.
 	 * 
@@ -115,7 +134,7 @@ public class UtilitaireEntreeSortie {
 
 		reel = JOptionPane.showInputDialog(msgSollic);
 
-		// Vérifier si c'est convertissable en réel.
+		// Vï¿½rifier si c'est convertissable en rï¿½el.
 		try{
 
 			if(reel != null){
