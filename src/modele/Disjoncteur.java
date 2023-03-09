@@ -2,6 +2,7 @@ package modele;
 import java.io.Serializable;
 import java.util.*;
 
+import io.UtilitaireEntreeSortie;
 import util.Liste;
 
 /*
@@ -103,10 +104,10 @@ public class Disjoncteur implements Serializable{
 
         // print the result of the search
         if (trouve) {
-            System.out.println(ampere + " est permis ");
+            System.out.println("lampere " + ampere + " est permis ");
             return ampere;
         } else {
-            System.out.println(ampere + " non permis ");
+            System.out.println("lampere " + ampere + " non permis returning 0");
             return 0;
         }
 	}
@@ -131,10 +132,10 @@ public class Disjoncteur implements Serializable{
 
         // print the result of the search
         if (trouve) {
-            System.out.println(tension + " est permis ");
+            System.out.println("tension " + tension + " est permis ");
             return (int)tension;
         } else {
-            System.out.println(tension + " non permis ");
+            System.out.println("tension " + tension + " non permis returning 0");
             return 0;
         }
 	}
@@ -169,7 +170,7 @@ public class Disjoncteur implements Serializable{
 		return getPuissanceEnWatt() / getMaxPuissanceEnWatt();
 	}
 	
-	//ajouter une puissance au disjoncteur
+	//ajouter une puissance au disjoncteur. Calcule l'ampere avec la puissance donne.
 	public void ajouterDemande(double puissance) {
 		
 		demandeDuCircuit.addFirst(puissance);		
@@ -181,7 +182,7 @@ public class Disjoncteur implements Serializable{
 		}
 		else if(Double.compare(puissance, 0) == 0 || Double.compare(tension, 0) == 0 || Double.compare(ampere, 0) == 0) {
 			
-			System.out.println("ampere ou tension egal 0");
+			System.out.println("Puissance ou ampere non valide");
 			retirerDemande(puissance);
 			etat = ETEINT;
 		}
@@ -204,7 +205,14 @@ public class Disjoncteur implements Serializable{
 			    	iterator.remove();
 			    }
 			}
+			if(demandeDuCircuit.size()== 1) {
+				System.out.println("La puissnce demande a ete retirer.");
+			}
 		}
+	}
+	@Override
+	public String toString() {
+		return "ampere du disjoncteur: " + getAmpere()+ "\ntension du disjoncteur: " + getTension()+ "\npuissance disjoncteur: " + getPuissanceEnWatt() + "\npuissance max: " + getMaxPuissanceEnWatt() + "\netat : " + 			getEtat() + "\nLongueur d'un circuit: " + demandeDuCircuit.size();
 	}
    
 }

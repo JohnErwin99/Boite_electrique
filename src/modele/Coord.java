@@ -1,17 +1,21 @@
 package modele;
+
+import java.io.Serializable;
+
 /**
- * Cette classe représente les coordonnées 
- * possible dans différents jeux de grille (ligne-colonne).
+ * Cette classe reprï¿½sente les coordonnï¿½es 
+ * possible dans diffï¿½rents jeux de grille (ligne-colonne).
  * 
- * Les attributs sont utilisables à l'aide des méthodes.
- * (même principe que  java.awt.Dimension).
+ * Les attributs sont utilisables ï¿½ l'aide des mï¿½thodes.
+ * (mï¿½me principe que  java.awt.Dimension).
  * 
  *@author pbelisle
  *@version Copyright H2009
  *@revisite H2023
  */
-public class Coord {
+public class Coord implements Serializable{
 
+	private static final long serialVersionUID = 1L;
 
 	/*
 	 * Les items choisis par l'utilisateur 
@@ -20,7 +24,7 @@ public class Coord {
 	private int colonne;
 
 	/**
-	* Constructeur par défaut avec la coordonnée  (0,0)
+	* Constructeur par dï¿½faut avec la coordonnï¿½e  (0,0)
 	*/
 	public Coord() {
 	
@@ -70,9 +74,9 @@ public class Coord {
 	}
 
 	/**
-	 * Construit une chaîne avec les attributs et la retourne.
+	 * Construit une chaï¿½ne avec les attributs et la retourne.
 	 * 
-	 * @return Une chaîne contenant les infos de la coordonnée.
+	 * @return Une chaï¿½ne contenant les infos de la coordonnï¿½e.
 	 */
 	public String toString(){
 	
