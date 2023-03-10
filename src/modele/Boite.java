@@ -294,4 +294,21 @@ public class Boite implements Serializable {
 	public String toString() {
 		return coord.getLigne() + " : " + coord.getColonne();
 	}
+	
+	//Ce que Ishak a ajouté
+	public double getRatioUtilisation() { //A FAIRE
+		return getConsommationTotalEnWatt() / ;
+	}
+
+	
+	public Disjoncteur[][] getTabDis(){
+		
+		return tabDisjoncteurs;
+	}
+	
+	//Nom a modifier 
+	@Override
+	public String toString() {
+		return ""+getMaxAmperes() +""+ temps_ups() +""+ getConsommationTotalEnWatt() +""+ getRatioUtilisation() +"\n";
+	}
 }
