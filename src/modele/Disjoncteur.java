@@ -214,6 +214,10 @@ public class Disjoncteur implements Serializable{
 	public String toString() {
 		return "ampere du disjoncteur: " + getAmpere()+ "\ntension du disjoncteur: " + getTension()+ "\npuissance disjoncteur: " + getPuissanceEnWatt() + "\npuissance max: " + getMaxPuissanceEnWatt() + "\netat : " + 			getEtat() + "\nLongueur d'un circuit: " + demandeDuCircuit.size();
 	}
+	//ce que Ishak a ajoute
+	public String toStringForBoite() {
+		return ""+getTension() +""+ getPuissanceEnWatt()+""+getRatio();  
+	}
    
 }
     
