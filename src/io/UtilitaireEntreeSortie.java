@@ -17,30 +17,37 @@ public class UtilitaireEntreeSortie {
 	/*
 	 * Fonction locale pour saisir et valider l'amp�rage d'un disjoncteur. 
 	 */
-	public static int ampereValide(Double ampere) {
+	public static double ampereValide(Double ampere) {
 
-		//J'ai setampere qui valide les ampere deja dans la classe disjoncteur. 
-		Disjoncteur d = new Disjoncteur();		
-		//return (int)d.setAmpere(ampere);
-		
+		System.out.println(ampere);
 		boolean trouve = false;
 		int index = -1;
-		for (int i = 0; i < d.AMPERAGES_PERMIS.length; i++) {
-            if (Double.compare(ampere, d.AMPERAGES_PERMIS[i]) == 0) {	
+		String amp = String.valueOf(ampere);
+		
+		//first thing t do is check if demande et ampere est valide, si oui on fait rien dautre.
+		for (int i = 0; i < Disjoncteur.AMPERAGES_PERMIS.length; i++) {
+            if (Double.compare(Double.parseDouble(amp), Disjoncteur.AMPERAGES_PERMIS[i]) == 0) {	
                 trouve = true;
                 index = i;
-                break;
+	            return Double.parseDouble(amp);
             }
-        }
+		}
 
-        // print the result of the search
-        if (trouve) {
-            System.out.println(ampere + " est permis ");
-            return (int)ampere;
-        } else {
-            System.out.println(ampere + " non permis ");
-            return 0;
-        }
+		do{
+			amp = JOptionPane.showInputDialog("Entrez un ampere valide " + 
+							Disjoncteur.CHAINE_AMPERAGE_PERMIS);
+
+			for (int i = 0; i < Disjoncteur.AMPERAGES_PERMIS.length; i++) {
+	            if (Double.compare(Double.parseDouble(amp), Disjoncteur.AMPERAGES_PERMIS[i]) == 0) {	
+	                trouve = true;
+	                index = i;
+		            return Double.parseDouble(amp);
+	            }
+			}			
+		}while(amp != null && 
+				trouve);
+
+		return Double.parseDouble(amp);
 	}
 
 	/*
@@ -114,7 +121,7 @@ public class UtilitaireEntreeSortie {
 				(Integer.parseInt(entier) < min ||
 						Integer.parseInt(entier) > max));
 
-		return (entier== null)?min-1:Integer.parseInt(entier) ;
+		return (entier== null)?min-1:Integer.parseInt(entier) - 1 ;
 	}
 
 	/**

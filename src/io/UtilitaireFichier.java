@@ -33,34 +33,27 @@ public class UtilitaireFichier {
 	 * Sauvegarde la bo�te dans un fichier texte dont on re�oit le nom.
 	 * 
 	 */
-	public static void sauvegarderDsFichierTexte(Boite boite, String nomFic)   {
-		
-		//objet to chaine caractere
-		
-		String boiteString = boite.toString();
-		Disjoncteur[][] tabDis = boite.getTabDis();
-		
-		
-		// Ecrire dans le fichier texte
-		PrintWriter writer;
+	public static void sauvegarderDsFichierTexte(Boite boite, String nomFic){
+
 		try {
-			writer = new PrintWriter(new FileWriter(nomFic+".txt"));
+            
+            FileWriter OuvreFichier = new FileWriter(nomFic, true);
+            BufferedWriter bw = new BufferedWriter(OuvreFichier);
+            
+            for(int i = 0; i < Boite.NB_LIGNES_MAX; i++) {
+            	for(int j = 0; j < Boite.NB_COLONNES; j++) {
+            		 bw.write(boite.getDisjoncteur(j, i).toString());
+                     bw.newLine();
+            	}
+            }
+            bw.close();
+            
+			System.out.println("Les donnees de la boite ont ete sauvegarder avec succes");
+ 
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 		
-			writer.println(boiteString);
-		
-			for (int i = 0; i < Boite.NB_LIGNES_MAX; i++) {
-				for (int j = 0; j < Boite.NB_COLONNES; j++) {
-				String tabDisString = tabDis[i][j].toStringForBoite();
-				writer.println(j+"/"+i+" "+tabDisString);
-			
-				}
-			}
-			writer.close();
-		} 
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	
@@ -74,25 +67,9 @@ public class UtilitaireFichier {
 	 * @param boite La bo�te � sauvegarder.
 	 */
 	public static void sauvegarderBoite(Boite boite, String nomFic){
-		//PAS OUBLIER SERIALIZABLE
-	
-		try {
-			//creer le fichier
-			FileOutputStream fileOut = new FileOutputStream(nomFic+".bin");
-			ObjectOutputStream objOut = new ObjectOutputStream (fileOut);
-		
-			//Sauvegarder l'objet dans le fichier binaire 
-			objOut.writeObject(boite);
-		
-			//fermer le stream
-			objOut.close();
-			fileOut.close();
-		
-			System.out.println("La boite a ete sauvegarde");
-		
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
+
+		// � �crire
+
 	}
 	
 	/**
