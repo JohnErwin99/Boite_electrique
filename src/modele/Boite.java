@@ -2,6 +2,8 @@ package modele;
 import java.io.Serializable;
 import java.util.*;
 
+import io.UtilitaireEntreeSortie;
+
 /*
 * Module qui permet la gestion d'une bo�te �lectrique
 * avec disjoncteurs.
@@ -40,6 +42,7 @@ public class Boite implements Serializable {
 	 *  LES ATTRIBUTS DE LA BOITE
 	 *********************************/
 	private int maxAmperes;
+	private int amperetotaledelaboite = 0;
 	
 	// Le tableau est 2D mais il est � l'envers de la r�alit� (ligne-colonne).
 	// Toutes les m�thodes qui n�cessitent la position, re�oivent 
@@ -114,20 +117,25 @@ public class Boite implements Serializable {
 		 return false;
 	}
 
-	public Disjoncteur getDisjoncteur(int ligne, int colonne) {
-		if(!getEmplacementEstVide(ligne, colonne)) {
-			for (int i = 0; i < tabDisjoncteurs.length; i++) {
-			    for (int j = 0; j < tabDisjoncteurs[i].length; j++) {
-			        if (tabDisjoncteurs[i][j] != null) {
-			        	return tabDisjoncteurs[i][j];
-			        }
-			        else {
-			        }
-			    }
-			    if (ligne != -1 && colonne != -1) {
-			        break;
-			    }
-			 }
+	public Disjoncteur getDisjoncteur(int colonne, int ligne) {
+		if(!getEmplacementEstVide(colonne, ligne)) {
+			//for (int i = 0; i < ligne; i++) {
+			    //for (int j = 0; j < tabDisjoncteurs[i].length; j++) {
+			        //if (tabDisjoncteurs[i][j] != null) {
+			try {
+				return tabDisjoncteurs[ligne][colonne];
+
+			}catch(Exception e) {
+				
+			}
+			        //}
+			        //else {
+			       // }
+			    //}
+			   // if (ligne != -1 && colonne != -1) {
+			        //break;
+			   // }
+			 //}
 		}
 		else {
 			System.out.println("Il n'y a rien dans cet emplacement");
@@ -146,8 +154,21 @@ public class Boite implements Serializable {
 
 	//method qui remplit la boit de disjoncteur aleatoirement?
 	public void remplirAlea() {
-	
-	    // � �crire
+		 //UtilitaireEntreeSortie u = new UtilitaireEntreeSortie();
+
+	    for(int i = 0; i < tabDisjoncteurs.length; i++) {
+	    	for(int j = 0; j < tabDisjoncteurs[i].length; j++) {
+	    		//remplit aleatoirement la premiere colonne de 240V
+	    		if(getEmplacementEstVide(j, i) == true && j == 0) {
+	    			tabDisjoncteurs[i][j] = new Disjoncteur(240);
+	    		}
+	    		else if(getEmplacementEstVide(j, i) == true && j == 1) {
+	    			tabDisjoncteurs[i][j] = new Disjoncteur(120);
+	    		}
+	    		else 
+	    			System.out.println("not empty");
+	    	}
+	    }
 
 		
 	}
@@ -172,7 +193,7 @@ public class Boite implements Serializable {
 		 return emplacementVide;
 		}
 
-	public void ajouterDisjoncteur(int ligne, int colonne, Disjoncteur d) {	
+	public void ajouterDisjoncteur(int colonne, int ligne, Disjoncteur d) {	
 		//utiliser classe coord pour les coordonnes de la boite
 		Coord ajouterDisjoncteur = new Coord();
 		ajouterDisjoncteur.setLigne(ligne);
@@ -182,15 +203,15 @@ public class Boite implements Serializable {
 			System.out.print("out of bounds\n");
 		}
 		// on aoute lobjet a la position voulu et on regarde si l'emplacement est vide avant d'ajouter.
-		if(!getEmplacementEstVide(ajouterDisjoncteur.getLigne(), ajouterDisjoncteur.getColonne())) {
+		if(!getEmplacementEstVide(ajouterDisjoncteur.getColonne(), ajouterDisjoncteur.getLigne())) {
 			System.out.println("L'emplacement n'est pas disponible");
 		}
 		else {
 					
-			tabDisjoncteurs[ajouterDisjoncteur.getLigne()][ajouterDisjoncteur.getColonne()] = d;
+			tabDisjoncteurs[ajouterDisjoncteur.getColonne()][ajouterDisjoncteur.getLigne()] = d;
 		}
 	}
-	public double getRatio(int ligne, int colonne) {
+	public double getRatio(int colonne, int ligne) {
 		Coord ajouterDemande = new Coord();
 		ajouterDemande.setLigne(ligne);
 		ajouterDemande.setColonne(colonne);
@@ -198,7 +219,7 @@ public class Boite implements Serializable {
 
 	}
 
-	public void ajouterDemande(int ligne, int colonne, double demande) {
+	public void ajouterDemande(int colonne, int ligne, double demande) {
 		Coord ajouterDemande = new Coord();
 		ajouterDemande.setLigne(ligne);
 		ajouterDemande.setColonne(colonne);
@@ -206,13 +227,15 @@ public class Boite implements Serializable {
 		if(coord.getColonne() > NB_COLONNES || coord.getLigne() > NB_LIGNES_MAX) {
 			System.out.print("out of bounds\n");
 		}
-		
 		// on aoute lobjet a la position voulu et on regarde si l'emplacement est vide. si est vide on ajouter la demande. 
-		if(!getEmplacementEstVide(ajouterDemande.getLigne(), ajouterDemande.getColonne())) {
+		if(!getEmplacementEstVide(ajouterDemande.getColonne(), ajouterDemande.getLigne())) {
 			for (int i = 0; i < tabDisjoncteurs.length; i++) {
 			    for (int j = 0; j < tabDisjoncteurs[i].length; j++) {
 			        if (tabDisjoncteurs[i][j] != null) {
 						tabDisjoncteurs[i][j].ajouterDemande(demande);
+			        }
+			        else if(tabDisjoncteurs[i][j].setAmpere((demande / tabDisjoncteurs[i][j].getTension()) * 0.80) == 0) {
+						System.out.println("Il n'y a rien dans cet emplacement");
 			        }
 			        else {
 						System.out.println("Il n'y a rien dans cet emplacement");
@@ -223,7 +246,7 @@ public class Boite implements Serializable {
 		
 	}
 
-	public void retirerPuissance(int ligne, int colonne, double demande) {
+	public void retirerPuissance(int colonne, int ligne, double demande) {
 	
 		Coord ajouterDemande = new Coord();
 		ajouterDemande.setLigne(ligne);
@@ -234,7 +257,7 @@ public class Boite implements Serializable {
 		}
 		
 		// on aoute lobjet a la position voulu et on regarde si l'emplacement est vide. si est vide on ajouter la demande. 
-		if(!getEmplacementEstVide(ajouterDemande.getLigne(),ajouterDemande.getColonne())) {
+		if(!getEmplacementEstVide(ajouterDemande.getColonne(),ajouterDemande.getLigne())) {
 					
 			tabDisjoncteurs[ajouterDemande.getLigne()][ajouterDemande.getColonne()].retirerDemande(demande);
 		}
@@ -256,12 +279,16 @@ public class Boite implements Serializable {
 
 	public int getNbDisjoncteursPhase() {
 	
+		nbDisjoncteursPhase = 0;
 		for (int i = 0; i < tabDisjoncteurs.length; i++) {
-	        if (tabDisjoncteurs[i][1] != null) {
-	        	nbDisjoncteursPhase++;
-	        }
+			for(int j = 0; j < tabDisjoncteurs[j].length; j++) {
+				if (tabDisjoncteurs[i][j].getTension() == 120) {
+					nbDisjoncteursPhase++;
+				}
+			}
 		 }
 		return nbDisjoncteursPhase;
+		
 	}
 
 	public int getNbDisjoncteursEntree() {
@@ -269,7 +296,7 @@ public class Boite implements Serializable {
 		return getNbDisjoncteurs() - getNbDisjoncteursPhase();
 	}
 
-	public boolean getEmplacementEstVide(int ligne, int colonne) {
+	public boolean getEmplacementEstVide(int colonne, int ligne) {
 	
 		coord = new Coord();
 		coord.setLigne(ligne);
@@ -281,34 +308,27 @@ public class Boite implements Serializable {
 				return false;
 
 			}
+			if(tabDisjoncteurs[coord.getLigne()][coord.getColonne()] == null)
+				return true;
 		}catch(Exception e) {
 			
 		}
-		if(tabDisjoncteurs[coord.getLigne()][coord.getColonne()] != null)
-			return false;
-			
-	   
-		return true;
+		return false;
+	}
+	public boolean isAmpereSupMaxAmpere() {
+		for(int i = 0; i < tabDisjoncteurs.length; i++) {
+			for(int j = 0; j < tabDisjoncteurs[i].length; j++) {
+				amperetotaledelaboite += tabDisjoncteurs[i][j].getAmpere();
+				
+			}
+		}
+		if(amperetotaledelaboite > maxAmperes) {
+			return true;
+		}
+		return false;
 	}
 	@Override
 	public String toString() {
 		return coord.getLigne() + " : " + coord.getColonne();
-	}
-	
-	//Ce que Ishak a ajouté
-	public double getRatioUtilisation() { //A FAIRE
-		return getConsommationTotalEnWatt() / ;
-	}
-
-	
-	public Disjoncteur[][] getTabDis(){
-		
-		return tabDisjoncteurs;
-	}
-	
-	//Nom a modifier 
-	@Override
-	public String toString() {
-		return ""+getMaxAmperes() +""+ temps_ups() +""+ getConsommationTotalEnWatt() +""+ getRatioUtilisation() +"\n";
 	}
 }

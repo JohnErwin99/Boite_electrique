@@ -177,6 +177,7 @@ public class Disjoncteur implements Serializable{
 		ampere = setAmpere((demandeDuCircuit.getFirst() / tension) / 0.80);
 
 		
+		
 		if(ampere > MAX_AMPERAGE) {
 			etat = ETEINT;
 		}
@@ -191,11 +192,12 @@ public class Disjoncteur implements Serializable{
 			retirerDemande(puissance);
 			
 		}
-		else if(ampere < MAX_AMPERAGE && demandeDuCircuit.getFirst() != 0) {
+		else if(ampere < MAX_AMPERAGE || demandeDuCircuit.getFirst() != 0) {
 			etat = ALLUME;
 		}
 	}
 	public void retirerDemande(double puissance) {
+		
 		// Verifier si la demande peut etre retirer. -15, on retire 15. -60 on retire 60.
 		Iterator<Double> iterator = demandeDuCircuit.iterator();
 		{
@@ -203,20 +205,15 @@ public class Disjoncteur implements Serializable{
 			    Double num = iterator.next();
 			    if(Double.compare(Math.abs(puissance), num) == 0) {
 			    	iterator.remove();
+					System.out.println("La puissnce" + puissance+  " demande a ete retirer.");
+
 			    }
-			}
-			if(demandeDuCircuit.size()== 1) {
-				System.out.println("La puissnce demande a ete retirer.");
 			}
 		}
 	}
 	@Override
 	public String toString() {
 		return "ampere du disjoncteur: " + getAmpere()+ "\ntension du disjoncteur: " + getTension()+ "\npuissance disjoncteur: " + getPuissanceEnWatt() + "\npuissance max: " + getMaxPuissanceEnWatt() + "\netat : " + 			getEtat() + "\nLongueur d'un circuit: " + demandeDuCircuit.size();
-	}
-	//ce que Ishak a ajoute
-	public String toStringForBoite() {
-		return ""+getTension() +""+ getPuissanceEnWatt()+""+getRatio();  
 	}
    
 }
