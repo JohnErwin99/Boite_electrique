@@ -1,14 +1,14 @@
 package gui;
 /**
- * Regroupe tous les SP pour gérer l'affichage d'une boîte de disjoncteurs 
- * dans le cadre du travail pratique #1 inf111 H2023 (avoir énoncé en main).
+ * Regroupe tous les SP pour gï¿½rer l'affichage d'une boï¿½te de disjoncteurs 
+ * dans le cadre du travail pratique #1 inf111 H2023 (avoir ï¿½noncï¿½ en main).
  * 
- * AUX ÉLÈVES : Il n'est pas nécessaire de lire cette classe pour 
- * réussir le travail.  Elle est utilisée ici pour l'affichage des 
- * disjoncteurs dans le cadre du travail pour lequel la théorie des GUI 
- * n'a pas encore été vue.
+ * AUX ï¿½Lï¿½VES : Il n'est pas nï¿½cessaire de lire cette classe pour 
+ * rï¿½ussir le travail.  Elle est utilisï¿½e ici pour l'affichage des 
+ * disjoncteurs dans le cadre du travail pour lequel la thï¿½orie des GUI 
+ * n'a pas encore ï¿½tï¿½ vue.
  *  
- * @author Pierre Bélisle 
+ * @author Pierre Bï¿½lisle 
  * @version Copyright H2023
  *
  */
@@ -32,16 +32,16 @@ public class UtilitaireAffichageBoite {
 	
 	public static final int NB_DISJ_PAR_COLONNE = 40;
 	
-	// A un effet sur la taille du texte affiché.
+	// A un effet sur la taille du texte affichï¿½.
 	public static final int NB_BTN_LARGEUR = 8;
 		
 	/*
-	* La stratégie est d'utiliser une classe interne GrilleGUI qui permet 
+	* La stratï¿½gie est d'utiliser une classe interne GrilleGUI qui permet 
 	* d'afficher dans une grille et d'ajouter des boutons d'options de menu.  
-	* Cette classe existait déjà , elle a simplement été adaptée pour ce travail.
+	* Cette classe existait dï¿½jï¿½, elle a simplement ï¿½tï¿½ adaptï¿½e pour ce travail.
 	*/
 	
-	// Permet l'affichage avec les options du menu décrite dans 
+	// Permet l'affichage avec les options du menu dï¿½crite dans 
 	// OPTIONS_MENU.
 	private static GrilleGui gui = 
 			new GrilleGui(NB_DISJ_PAR_COLONNE,
@@ -52,17 +52,17 @@ public class UtilitaireAffichageBoite {
 					GrilleGui.QUITTE);
 	
         /**
-	 * Retourne si vrai si un des boutons de menu a été cliqué.
+	 * Retourne si vrai si un des boutons de menu a ï¿½tï¿½ cliquï¿½.
 	 * 
-	 * @return Si un des boutons de menu a été cliqué.
+	 * @return Si un des boutons de menu a ï¿½tï¿½ cliquï¿½.
 	 */
 	public static boolean optionMenuEstCliquee(){
 		return gui.estBoutonMenu;
 	}
 
 	/**
-	 * Retourne la dernière option cliquée et null autrement.
-	 * @return Le texte dans le bouton cliqué s'il y a lieu.
+	 * Retourne la derniï¿½re option cliquï¿½e et null autrement.
+	 * @return Le texte dans le bouton cliquï¿½ s'il y a lieu.
 	 */
 	public static String getOptionMenuClique(){
 
@@ -76,24 +76,24 @@ public class UtilitaireAffichageBoite {
 
 
 	/**
-	 * Affiche les informations que contient la boîte et les 
+	 * Affiche les informations que contient la boï¿½te et les 
 	 * options de menu.
 	 * 
-	 * @param boite La boà®te à  afficher.
+	 * @param boite La boï¿½te ï¿½ afficher.
 	 */
 	public static void afficherBoite(Boite boite){
 		
 		
 		final int NB_COL_AFFICHAGE = 5;
 		
-		// Nombre de cases de déplacement pour afficher les NB_COLONNES.
+		// Nombre de cases de dï¿½placement pour afficher les NB_COLONNES.
 		final int DEP_POSITION = 3;
 		
 		gui.effacer();
 		
 		afficherInfoBoite(boite);
 
-		// le NB_COL_AFFICHAGE c'est pour les cases représentant la boite
+		// le NB_COL_AFFICHAGE c'est pour les cases reprï¿½sentant la boite
 		// contient des disjoncteurs et un espace au centre.
 		int posJ = (gui.getNbColonnes() - NB_COL_AFFICHAGE) /
 									Boite.NB_COLONNES;
@@ -108,7 +108,7 @@ public class UtilitaireAffichageBoite {
 
 				if(!boite.getEmplacementEstVide(j,i)){
 
-					// Évite pls appels à  l'accesseur.
+					// ï¿½vite pls appels ï¿½ l'accesseur.
 					disjoncteur = boite.getDisjoncteur(j,i);
 
 					if(disjoncteur.getEtat() == Disjoncteur.ETEINT){
@@ -131,7 +131,7 @@ public class UtilitaireAffichageBoite {
 
 					else{
 						gui.setCouleurFond(i, 
-								posJ + j * DEP_POSITION, Color.GRAY);
+								posJ + j * DEP_POSITION, Color.GREEN);
 						
 						gui.setBordureVisible(i,posJ + j * DEP_POSITION, true);
 
@@ -152,35 +152,35 @@ public class UtilitaireAffichageBoite {
 	
 
 	/*
-	 * Procédure locale pour afficher les infos d'en-tête de la boîte.
+	 * Procï¿½dure locale pour afficher les infos d'en-tï¿½te de la boï¿½te.
 	 */
 	private static void afficherInfoBoite(Boite boite){
 
-		//  On veut afficher en bas à  gauche.
+		//  On veut afficher en bas ï¿½ gauche.
 		int ligne = gui.getNbLignes() - 2;
 
-		gui.setValeur(ligne, 0,"Qtée de tension entrée :");
+		gui.setValeur(ligne, 0,"Qtï¿½e de tension entrï¿½e :");
 		gui.setValeur(ligne, 1, 
 				String.valueOf(boite.getNbDisjoncteursEntree()));
 
 		ligne--;
-		gui.setValeur(ligne, 0,"Qtée de tension phase :");
+		gui.setValeur(ligne, 0,"Qtï¿½e de tension phase :");
 		gui.setValeur(ligne, 1, 
-				String.valueOf(boite.getNbDisjoncteursEntree()));
+				String.valueOf(boite.getNbDisjoncteursPhase()));
 
 		ligne--;
 		gui.setValeur(ligne, 0,"Consommation :");
 		gui.setValeur(ligne, 1, String.valueOf(boite.getConsommationTotalEnWatt()) + "W");
 
 		ligne--;
-		gui.setValeur(ligne, 0, "Capacité :");
+		gui.setValeur(ligne, 0, "Capacitï¿½ :");
 		gui.setValeur(ligne, 1, String.valueOf(boite.getMaxAmperes()) + "A");
 
 	}
 
 
 	/**
-	 * Classe locale PRIVÉE qui permet la gestion une application de
+	 * Classe locale PRIVï¿½E qui permet la gestion une application de
 	 * type grille.  
 	 * 
 	 *
@@ -192,20 +192,20 @@ public class UtilitaireAffichageBoite {
 	 * 
 	 * Il est possible aussi d'ajouter des boutons de menu.  Dans ce cas, 
 	 * estBoutonMenu retourne vrai et getTexteMenu retourne le texte contenu 
-	 * dans le bouton.  Ces boutons sont créés en bas de la fenàªtre à  partir d'un
-	 * tableau de String fourni au constructeur (mettre null si non désiré).
+	 * dans le bouton.  Ces boutons sont crï¿½ï¿½s en bas de la fenï¿½tre ï¿½ partir d'un
+	 * tableau de String fourni au constructeur (mettre null si non dï¿½sirï¿½).
 	 * 
 	 * Utile pour des TP en inf111 (Jeux de grille  tels Sudoku, Binero, affichage 
 	 * d'un tableau 2D, ...)
 	 * 
-	 * @author Pierre Bélisle (copyright 2016)
+	 * @author Pierre Bï¿½lisle (copyright 2016)
 	 * @version H2016
 	 */
 	private static class GrilleGui  implements Runnable{
 
 		/*
-		 * STRATÉGIE : On met des boutons dans un panneau et on offre les
-		 * méthodes pour les modifier la couleur de fond et le texte.
+		 * STRATï¿½GIE : On met des boutons dans un panneau et on offre les
+		 * mï¿½thodes pour les modifier la couleur de fond et le texte.
 		 */
 
 		//Limite pour voir le texte
@@ -215,13 +215,13 @@ public class UtilitaireAffichageBoite {
 		public static final int TAILLE_CAR = 10;
 
 		// Deux modes de fermeture du gui.  On quitte le programme ou on 
-		// dispose juste la fenêtre.
+		// dispose juste la fenï¿½tre.
 		public static final int QUITTE = JFrame.EXIT_ON_CLOSE;
 
 		// On compose dans un cadre.
 		private JFrame cadre = new JFrame();
 
-		// La grille de boutonns qui est affichée.
+		// La grille de boutonns qui est affichï¿½e.
 		private JButton [][] grille;
 
 		// Retenir la taille de la grille.
@@ -232,7 +232,7 @@ public class UtilitaireAffichageBoite {
 		private Color couleurTexte;
 		private Color couleurFond;
 
-		// La taille de l'écran.
+		// La taille de l'ï¿½cran.
 		private Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 
 		// Retenir le tableau des options de menus.
@@ -241,16 +241,16 @@ public class UtilitaireAffichageBoite {
 		// Pour les options de menus du panneau du bas. 
 		private boolean estBoutonMenu;
 
-		// Le texte du bouton cliqué s'il y a eu un clic sur un des boutons 
-		// de menu et il est mis à  null aprà¨s getOptionMenu.
+		// Le texte du bouton cliquï¿½ s'il y a eu un clic sur un des boutons 
+		// de menu et il est mis ï¿½ null aprï¿½s getOptionMenu.
 		private String optionClique;
 
 		
      	/**
-		 * Crée une grille selon les dimensions et les couleurs reçues.
+		 * Crï¿½e une grille selon les dimensions et les couleurs reï¿½ues.
 		 * 
-		 * S'il y a un tableau de menus, des boutons  sont ajoutés en bas 
-		 * de l'écran.
+		 * S'il y a un tableau de menus, des boutons  sont ajoutï¿½s en bas 
+		 * de l'ï¿½cran.
 		 * 
 		 * @param nbLignes L'axe des Y
 		 * @param nbColonnes L'axe des X
@@ -278,14 +278,14 @@ public class UtilitaireAffichageBoite {
 			// On retient les options du menu.
 			this.tabMenus = tabMenus;
 
-			// On crée le tableau 2D (vide).
+			// On crï¿½e le tableau 2D (vide).
 			grille = new JButton[nbLignes][nbColonnes];
 					
 
-			// Rien de cliqué à  date.
+			// Rien de cliquï¿½ ï¿½ date.
 			estBoutonMenu = false;
 
-			//On crée le panneau du bas avec les boutons de menu.
+			//On crï¿½e le panneau du bas avec les boutons de menu.
 
 			// On affiche le cadre dans un thread.
 			Thread t = new Thread(this);
@@ -300,7 +300,7 @@ public class UtilitaireAffichageBoite {
 		       
 			/*
 			 * Comme c'est un Thread,  il se peut que la grille ne soit pas  
-			 * encore créée alors on attend.
+			 * encore crï¿½ï¿½e alors on attend.
 			 */
 			if(grille[0][0]==null)
 				try {
@@ -323,14 +323,14 @@ public class UtilitaireAffichageBoite {
 		/**
 		 * Permet de modifier la valeur d'une case de la grille
 		 * 
-		 * @param coord La position de la case désirée
+		 * @param coord La position de la case dï¿½sirï¿½e
 		 * @param valeur La nouvelle valeur
 		 */
 		public void setValeur(int y, int x, String valeur){
 
 			/*
 			 * Comme c'est un Thread,  il se peut que la grille ne soit pas  
-			 * encore créée alors on attend.
+			 * encore crï¿½ï¿½e alors on attend.
 			 */
 			if(grille[y][x]==null){
 				try {
@@ -400,10 +400,10 @@ public class UtilitaireAffichageBoite {
 
 
 		/**
-		 * Fonction locale pour éviter la répétition de code.
-		 * Elle sert à  mettre toutes les tailles à  la màªme dimension.
+		 * Fonction locale pour ï¿½viter la rï¿½pï¿½tition de code.
+		 * Elle sert ï¿½ mettre toutes les tailles ï¿½ la mï¿½me dimension.
 		 * 
-		 * @param paneau Le panneau à  dimensionner.
+		 * @param paneau Le panneau ï¿½ dimensionner.
 		 * @param dim La dimension du panneau.
 		 */
 		private void setTaillePanneau (JPanel panneau, Dimension dim){
@@ -417,13 +417,13 @@ public class UtilitaireAffichageBoite {
 		@Override
 		public void run() {
 
-			// Plein écran.
+			// Plein ï¿½cran.
 			cadre.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 			// On quitte sur X.
 			cadre.setDefaultCloseOperation(QUITTE);
 
-			// Obtention de la référence sur le contentPane (évite pls appels).
+			// Obtention de la rï¿½fï¿½rence sur le contentPane (ï¿½vite pls appels).
 			JPanel panneauPrincipal = (JPanel) cadre.getContentPane();
 
 			// Le panneau contenant la grille.
@@ -437,13 +437,13 @@ public class UtilitaireAffichageBoite {
 
 			if(tabMenus != null){
 
-				// Les boutons de menu s'il y en a (FlowLayout par défaut).
+				// Les boutons de menu s'il y en a (FlowLayout par dï¿½faut).
 				JPanel panneauBas = new JPanel();		
 
 				Dimension dh = new Dimension (d.width, (int)(d.height*.8));
 				Dimension db = new Dimension (d.width, (int)(d.height*.1));
 
-				// La dimension pour l'allure de la fenêtre.
+				// La dimension pour l'allure de la fenï¿½tre.
 				setTaillePanneau(panneauHaut, dh);
 				setTaillePanneau(panneauBas, db);
 
@@ -455,7 +455,7 @@ public class UtilitaireAffichageBoite {
 
 			else{
 			
-				//Le panneau du haut est plein écran s'il n'y a pas de menu
+				//Le panneau du haut est plein ï¿½cran s'il n'y a pas de menu
 				panneauPrincipal.add(panneauHaut);
             }
             
@@ -476,7 +476,7 @@ public class UtilitaireAffichageBoite {
 
 				b =new JButton(tabMenus[i]);
 
-				// La dimension d'un bouton dépend de la taille de l'écran, 
+				// La dimension d'un bouton dï¿½pend de la taille de l'ï¿½cran, 
 				// on centre la grille.			
 				b.addActionListener(new ActionListener(){
 
@@ -496,7 +496,7 @@ public class UtilitaireAffichageBoite {
 		/*
 		 * Ajoute les boutons dans la grille et dans le panneau.
 		 * 
-		 * Principalement pour la lisibilité du code.
+		 * Principalement pour la lisibilitï¿½ du code.
 		 */
 		private void ajouterBoutons(JPanel panneau){
 
