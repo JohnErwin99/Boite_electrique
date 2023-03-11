@@ -64,9 +64,25 @@ public class UtilitaireFichier {
 	 * @param boite La bo�te � sauvegarder.
 	 */
 	public static void sauvegarderBoite(Boite boite, String nomFic){
-
-		// � �crire
-
+		//PAS OUBLIER SERIALIZABLE
+	
+		try {
+			//creer le fichier
+			FileOutputStream fileOut = new FileOutputStream(nomFic+".bin");
+			ObjectOutputStream objOut = new ObjectOutputStream (fileOut);
+		
+			//Sauvegarder l'objet dans le fichier binaire 
+			objOut.writeObject(boite);
+		
+			//fermer le stream
+			objOut.close();
+			fileOut.close();
+		
+			System.out.println("La boite a ete sauvegarde");
+		
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
