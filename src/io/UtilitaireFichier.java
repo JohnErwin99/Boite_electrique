@@ -33,24 +33,34 @@ public class UtilitaireFichier {
 	 * Sauvegarde la bo�te dans un fichier texte dont on re�oit le nom.
 	 * 
 	 */
-	public static void sauvegarderDsFichierTexte(Boite boite, String nomFic, int ligne, int colonne){
-
-		try {
-            
-            FileWriter fw = new FileWriter(nomFic, true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write("Nombre max d'ampere de la boite: " + boite.getMaxAmperes()+"\n" +
-            		"Le temp de LUPS: " + boite.temps_ups() + "\n" + "la puissance totale consomme: " + boite.getConsommationTotalEnWatt() + 
-            		"\nle ratio est de: " + boite.getRatio(ligne, colonne));
-            bw.newLine();
-            bw.close();
-            
-			System.out.println("Les donnees de la boite ont ete sauvegarder avec succes");
- 
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+	public static void sauvegarderDsFichierTexte(Boite boite, String nomFic)   {
 		
+		//objet to chaine caractere
+		
+		String boiteString = boite.toString();
+		Disjoncteur[][] tabDis = boite.getTabDis();
+		
+		
+		// Ecrire dans le fichier texte
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter(new FileWriter(nomFic+".txt"));
+		
+			writer.println(boiteString);
+		
+			for (int i = 0; i < Boite.NB_LIGNES_MAX; i++) {
+				for (int j = 0; j < Boite.NB_COLONNES; j++) {
+				String tabDisString = tabDis[i][j].toStringForBoite();
+				writer.println(j+"/"+i+" "+tabDisString);
+			
+				}
+			}
+			writer.close();
+		} 
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	
