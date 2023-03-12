@@ -1,4 +1,8 @@
 package gui;
+import java.io.File;
+
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -7,6 +11,9 @@ import io.UtilitaireEntreeSortie;
 import io.UtilitaireFichier;
 import modele.Boite;
 import modele.Disjoncteur;
+import javax.swing.JFileChooser;
+import javax.swing.JFileChooser;
+import javax.swing.JFileChooser;
 
 /*
  * Classe qui contient les sous-programmes pour g�rer les boutons d'option
@@ -37,10 +44,15 @@ public class UtilitaireGestionMenu {
 	    boolean sortie = false;
 		
 	    String[] buttons = { "Yes","No"};
-
-	    int rc = JOptionPane.showOptionDialog(null, "Voulez vous vriament quitter ?", "Confirmation",
+	    int save = JOptionPane.showOptionDialog(null, "Voulez vous sauvegarder avant de quitter ?", "Sauvegarde",
+		        JOptionPane.WARNING_MESSAGE, 0, null, buttons, buttons[1]);
+	    if (save == 0) {
+	    	sauvegarderBoite(boite);
+	    }
+	    
+	    int rc = JOptionPane.showOptionDialog(null, "Voulez vous vraiment quitter ?", "Confirmation",
 	        JOptionPane.WARNING_MESSAGE, 0, null, buttons, buttons[1]);
-
+	    
 	    System.out.println(rc);	 
 	    if(rc == 0) {
 	    	sortie = true;
@@ -60,16 +72,12 @@ public class UtilitaireGestionMenu {
 			int ligne = UtilitaireEntreeSortie.entierValide("Entrer la ligne ou inserer un disjoncteur", 1, Boite.NB_LIGNES_MAX);
 			int colonne = UtilitaireEntreeSortie.entierValide("Entrer la colonne pour ajouter un disjoncteur", 1, Boite.NB_COLONNES);
 			int tension = UtilitaireEntreeSortie.tensionValide();
-
-
-			if(!boite.getEmplacementEstVide(colonne, ligne)) {
-			     JOptionPane.showMessageDialog(null, "Pas de place dispo a cet emplacement, choisir un autre");
-		    }
-			else if(UtilitaireEntreeSortie.tensionValide() == 0) {
-				
+			
+			if(boite.EstVide(colonne, ligne) == true) {
+				boite.ajouterDisjoncteur(colonne, ligne, new Disjoncteur(tension));
 			}
 			else {
-				boite.ajouterDisjoncteur(colonne, ligne, new Disjoncteur(tension));
+				  JOptionPane.showMessageDialog(null, "Pas de place dispo a cet emplacement, choisir un autre");
 			}
 
 		}catch(Exception e) {
@@ -87,31 +95,35 @@ public class UtilitaireGestionMenu {
 		    
 		try {
 			int ligne = UtilitaireEntreeSortie.entierValide("Entrer la ligne ou inserer un disjoncteur", 1, Boite.NB_LIGNES_MAX);
-			int colonne = UtilitaireEntreeSortie.entierValide("Entrer la colonne pour ajouter un disjoncteur", 1, Boite.NB_COLONNES);
-			int demande = Integer.parseInt(JOptionPane.showInputDialog("Entrer la demande en WATTS"));
+			
+			if (ligne != -1 ) { // ligne != min-2 (1-2)
+				int colonne = UtilitaireEntreeSortie.entierValide("Entrer la colonne pour ajouter un disjoncteur", 1, Boite.NB_COLONNES);
+				if (colonne != -1 ) {
+				int demande = Integer.parseInt(JOptionPane.showInputDialog("Entrer la demande en WATTS"));
 			 
-			 //si la demande - negative, on retire une demande du disjoncteur.
+					//si la demande - negative, on retire une demande du disjoncteur.
 		
-		     //on passe la puissance / tension / 0.80 qui equivaut a lampere. 
-			 //La method ajouterDemande prends un puissance alors il faut reconvertir lampere en puissance, 
-			 //donc ampere *  tension * 0.80. 
-			 //donc, on valide lampre en passant la variable (demande / tension / 0.80) = ampere
-			 //et on ajoute la demande (watts), (demande / tension / 0.80) *( tension * 0.80)
+					//on passe la puissance / tension / 0.80 qui equivaut a lampere. 
+					//La method ajouterDemande prends un puissance alors il faut reconvertir lampere en puissance, 
+					//donc ampere *  tension * 0.80. 
+					//donc, on valide lampre en passant la variable (demande / tension / 0.80) = ampere
+					//et on ajoute la demande (watts), (demande / tension / 0.80) *( tension * 0.80)
 			 
-			 if(boite.isAmpereSupMaxAmpere()) {
-			     JOptionPane.showMessageDialog(null, "Vous avez depasse le maximum dampere que vous pouvez ajouter dans la boite.");
-			 }
-			// else if(demande == (demande * -1)) {
-			    // JOptionPane.showMessageDialog(null, "Vous avez depasse le maximum dampere que vous pouvez ajouter, vous devez enlever une demande");
+					if(boite.isAmpereSupMaxAmpere()) {
+						JOptionPane.showMessageDialog(null, "Vous avez depasse le maximum dampere que vous pouvez ajouter dans la boite.");
+					}
+					// else if(demande == (demande * -1)) {
+					// JOptionPane.showMessageDialog(null, "Vous avez depasse le maximum dampere que vous pouvez ajouter, vous devez enlever une demande");
 
-			// }
-			 else {
-				 boite.getDisjoncteur(colonne, ligne).ajouterDemande(UtilitaireEntreeSortie.ampereValide((demande / boite.getDisjoncteur(colonne, ligne).getTension()) / 0.80)
-					 * boite.getDisjoncteur(colonne, ligne).getTension() * 0.80);
-				 JOptionPane.showMessageDialog(null, boite.getDisjoncteur(colonne, ligne).toString());
-			 }
-			 
-			 
+					// }
+					else {
+					boite.getDisjoncteur(colonne, ligne).ajouterDemande(UtilitaireEntreeSortie.ampereValide((demande / boite.getDisjoncteur(colonne, ligne).getTension()) / 0.80)
+							* boite.getDisjoncteur(colonne, ligne).getTension() * 0.80);
+					JOptionPane.showMessageDialog(null, boite.getDisjoncteur(colonne, ligne).toString());
+					}
+				}
+			}
+			
 		     
 
 			 //regarde si la ampere est valide en passant les valeurs(ampere).
@@ -140,9 +152,27 @@ public class UtilitaireGestionMenu {
 	 * @return La boite r�cup�rer ou null.
 	 */
 	public static Boite recupererBoite() {
-		String fichier = JOptionPane.showInputDialog("Le nom du fichier pour recuperer la boite");
-
-		return UtilitaireFichier.recupererBoite(fichier);
+		//String fichier = JOptionPane.showInputDialog("Le nom du fichier pour recuperer la boite");
+		 
+		  
+		 JFrame frame = new JFrame();
+	        JFileChooser fileChooser = new JFileChooser();
+	        int result = fileChooser.showOpenDialog(frame);
+	        if (result == JFileChooser.APPROVE_OPTION) {
+	     
+	            File file = fileChooser.getSelectedFile();
+	            System.out.println("Choisir le fichier: " + file.getAbsolutePath());
+	       
+	        	String nomFichier = file.getName();
+	        	if (nomFichier.endsWith(".bte")) {
+	        		Boite boite = UtilitaireFichier.recupererBoite(nomFichier);
+	        		return boite;
+	        	}
+	        	JOptionPane.showMessageDialog(null, "This file is not a .bte file");
+	        }
+	        	return null;
+			
+		
 	}
 
 	/**
@@ -151,8 +181,30 @@ public class UtilitaireGestionMenu {
 	 * 
 	 * @param La bo�te � sauvegarder.
 	 */
+	//IMPORTANT. AJOUTER LA SAUVEGARDE EN BINAIRE
 	public static void sauvegarderBoite(Boite boite) {
-		UtilitaireFichier.sauvegarderDsFichierTexte(boite, "boite.txt");
-	     JOptionPane.showMessageDialog(null, "Boite sauvegarde");
+		
+		JFileChooser fileChooser = new JFileChooser();
+		int entree = fileChooser.showSaveDialog(null);
+		boolean saveConfirm = false;
+		if (entree == JFileChooser.APPROVE_OPTION) {
+			File fichierChoisie = fileChooser.getSelectedFile();
+			String nomFichier = fichierChoisie.getName();
+			
+				if(nomFichier!= null && nomFichier.length()>=1 ) {
+					saveConfirm = true;
+					JOptionPane.showMessageDialog(null, "Boite sauvegarde");
+					UtilitaireFichier.sauvegarderDsFichierTexte(boite, nomFichier+".txt");
+					UtilitaireFichier.sauvegarderBoite(boite,nomFichier);
+				}
+		}
+		if (saveConfirm = false) {
+			JOptionPane.showMessageDialog(null, "Sauvegarde de la boite échoué");
+		}
+		
+		
+		//String nomFic = JOptionPane.showInputDialog("Entrez le nom du fichier");
+		
+		
 	}
 }
