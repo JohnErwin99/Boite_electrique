@@ -81,7 +81,7 @@ public class UtilitaireEntreeSortie {
 
 
 	/**
-	 * Saisit et valide un entier entre min et max.  La fonction retourne min - 1
+	 * Saisit et valide un entier entre min et max.  La fonction retourne min - 2
 	 * si l'utilisateur annule.
 	 * 
 	 * 
@@ -89,7 +89,7 @@ public class UtilitaireEntreeSortie {
 	 * @param min La plus petite valeur permise.
 	 * @param max La plus grande valeur permise.
 	 * 
-	 * @return L'entier saisit ou min-1 si l'utilisateur annule.
+	 * @return L'entier saisit ou min-2 si l'utilisateur annule.
 	 */
 	public static int entierValide(String msgSollic, int min, int max) {
 
@@ -114,14 +114,14 @@ public class UtilitaireEntreeSortie {
 			catch(Exception e){
 
 				// Dans le cas d'une exception, on remet un entier invalide. 
-				entier =  String.valueOf(min-1) ;
+				entier =  String.valueOf(min-2) ;
 			}
 
 		}while(entier != null && 
 				(Integer.parseInt(entier) < min ||
 						Integer.parseInt(entier) > max));
 
-		return (entier== null)?min-1:Integer.parseInt(entier) - 1 ;
+		return (entier== null)?min-2:Integer.parseInt(entier) - 1 ;
 	}
 
 	/**
