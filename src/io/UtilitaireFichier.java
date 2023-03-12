@@ -69,7 +69,23 @@ public class UtilitaireFichier {
 	public static void sauvegarderBoite(Boite boite, String nomFic){
 
 		// � �crire
-
+		try {
+			//creer le fichier
+			FileOutputStream fileOut = new FileOutputStream(nomFic+".bte");
+			ObjectOutputStream objOut = new ObjectOutputStream (fileOut);
+		
+			//Sauvegarder l'objet dans le fichier binaire 
+			objOut.writeObject(boite);
+		
+			//fermer le stream
+			objOut.close();
+			fileOut.close();
+		
+			System.out.println("La boite a ete sauvegarde");
+		
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -84,9 +100,33 @@ public class UtilitaireFichier {
 	public static Boite recupererBoite(String nomFic){
 
 		Boite boite = null;
+		
+		//fichier doit contenir une boite
+		
+			try {
+				//creer le stream pour lire l'objet
+				FileInputStream fileInput = new FileInputStream(nomFic);
+				ObjectInputStream objInput = new ObjectInputStream(fileInput);
+			
+				//lire l'objet
+				boite = (Boite) objInput.readObject();
+				
+				objInput.close();
+				fileInput.close();
+			} catch(IOException | ClassNotFoundException exception) {
+				exception.printStackTrace();
+			}
+			
+		
+		return boite;
+	}
+}
+	/*public static Boite recupererBoite(String nomFic){
+
+		Boite boite = null;
 
 		 try {
-	            FileReader reader = new FileReader(nomFic);
+	            FileReader reader = new FileReader(nomFic+".bte");
 	            BufferedReader bufferedReader = new BufferedReader(reader);
 	 
 	            String line;
@@ -101,4 +141,4 @@ public class UtilitaireFichier {
 	        }
 		return boite;
 	}
-}
+}*/
