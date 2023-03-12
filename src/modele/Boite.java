@@ -152,7 +152,7 @@ public class Boite implements Serializable {
 		return maxAmperes;
 	}
 
-	//method qui remplit la boit de disjoncteur aleatoirement?
+	//method qui remplit la boit de disjoncteur aleatoirement
 	public void remplirAlea() {
 		 //UtilitaireEntreeSortie u = new UtilitaireEntreeSortie();
 
@@ -207,8 +207,10 @@ public class Boite implements Serializable {
 			System.out.println("L'emplacement n'est pas disponible");
 		}
 		else {
-					
-			tabDisjoncteurs[ajouterDisjoncteur.getColonne()][ajouterDisjoncteur.getLigne()] = d;
+			//tabDisjoncteurs[ajouterDisjoncteur.getColonne()][ajouterDisjoncteur.getLigne()] = d;
+
+			tabDisjoncteurs[ajouterDisjoncteur.getLigne()][ajouterDisjoncteur.getColonne()] = d;
+			
 		}
 	}
 	public double getRatio(int colonne, int ligne) {
@@ -280,13 +282,13 @@ public class Boite implements Serializable {
 	public int getNbDisjoncteursPhase() {
 	
 		nbDisjoncteursPhase = 0;
-		for (int i = 0; i < tabDisjoncteurs.length; i++) {
-			for(int j = 0; j < tabDisjoncteurs[j].length; j++) {
-				if (tabDisjoncteurs[i][j].getTension() == 120) {
-					nbDisjoncteursPhase++;
-				}
+		int j = 1;
+		for (int i = 0; i < tabDisjoncteurs.length; i++)
+		{
+			if (tabDisjoncteurs[i][j] != null) {
+				nbDisjoncteursPhase++;
 			}
-		 }
+		}
 		return nbDisjoncteursPhase;
 		
 	}
