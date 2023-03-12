@@ -73,7 +73,7 @@ public class UtilitaireGestionMenu {
 			int colonne = UtilitaireEntreeSortie.entierValide("Entrer la colonne pour ajouter un disjoncteur", 1, Boite.NB_COLONNES);
 			int tension = UtilitaireEntreeSortie.tensionValide();
 			
-			if(boite.EstVide(colonne, ligne) == true) {
+			if(boite.getEmplacementEstVide(colonne, ligne) == true) {
 				boite.ajouterDisjoncteur(colonne, ligne, new Disjoncteur(tension));
 			}
 			else {
@@ -92,13 +92,15 @@ public class UtilitaireGestionMenu {
 	 * @param boite  La boite � consid�rer.
 	 */
 	public static void ajouterDemande(Boite boite){
-		    
+		System.out.println("in ajouter demande");
+
 		try {
-			int ligne = UtilitaireEntreeSortie.entierValide("Entrer la ligne ou inserer un disjoncteur", 1, Boite.NB_LIGNES_MAX);
+			int ligne = UtilitaireEntreeSortie.entierValide("Entrer la ligne ou inserer une demnde", 1, Boite.NB_LIGNES_MAX);
 			
-			if (ligne != -1 ) { // ligne != min-2 (1-2)
-				int colonne = UtilitaireEntreeSortie.entierValide("Entrer la colonne pour ajouter un disjoncteur", 1, Boite.NB_COLONNES);
-				if (colonne != -1 ) {
+			//if (ligne != -1 ) { // ligne != min-2 (1-2)
+			//entierValide fait deja le check
+				int colonne = UtilitaireEntreeSortie.entierValide("Entrer la colonne pour ajouter un", 1, Boite.NB_COLONNES);
+				//if (colonne != -1 ) {
 				int demande = Integer.parseInt(JOptionPane.showInputDialog("Entrer la demande en WATTS"));
 			 
 					//si la demande - negative, on retire une demande du disjoncteur.
@@ -109,20 +111,21 @@ public class UtilitaireGestionMenu {
 					//donc, on valide lampre en passant la variable (demande / tension / 0.80) = ampere
 					//et on ajoute la demande (watts), (demande / tension / 0.80) *( tension * 0.80)
 			 
-					if(boite.isAmpereSupMaxAmpere()) {
-						JOptionPane.showMessageDialog(null, "Vous avez depasse le maximum dampere que vous pouvez ajouter dans la boite.");
-					}
+					//if(boite.isAmpereSupMaxAmpere()) {
+						//JOptionPane.showMessageDialog(null, "Vous avez depasse le maximum dampere que vous pouvez ajouter dans la boite.");
+					//}
 					// else if(demande == (demande * -1)) {
 					// JOptionPane.showMessageDialog(null, "Vous avez depasse le maximum dampere que vous pouvez ajouter, vous devez enlever une demande");
 
 					// }
-					else {
+					//else {
 					boite.getDisjoncteur(colonne, ligne).ajouterDemande(UtilitaireEntreeSortie.ampereValide((demande / boite.getDisjoncteur(colonne, ligne).getTension()) / 0.80)
 							* boite.getDisjoncteur(colonne, ligne).getTension() * 0.80);
 					JOptionPane.showMessageDialog(null, boite.getDisjoncteur(colonne, ligne).toString());
-					}
-				}
-			}
+					
+					//}
+				//}
+			//}
 			
 		     
 
@@ -152,27 +155,23 @@ public class UtilitaireGestionMenu {
 	 * @return La boite r�cup�rer ou null.
 	 */
 	public static Boite recupererBoite() {
-		//String fichier = JOptionPane.showInputDialog("Le nom du fichier pour recuperer la boite");
-		 
-		  
-		 JFrame frame = new JFrame();
-	        JFileChooser fileChooser = new JFileChooser();
-	        int result = fileChooser.showOpenDialog(frame);
-	        if (result == JFileChooser.APPROVE_OPTION) {
-	     
-	            File file = fileChooser.getSelectedFile();
-	            System.out.println("Choisir le fichier: " + file.getAbsolutePath());
-	       
-	        	String nomFichier = file.getName();
-	        	if (nomFichier.endsWith(".bte")) {
-	        		Boite boite = UtilitaireFichier.recupererBoite(nomFichier);
-	        		return boite;
-	        	}
-	        	JOptionPane.showMessageDialog(null, "This file is not a .bte file");
-	        }
-	        	return null;
-			
-		
+	//String fichier = JOptionPane.showInputDialog("Le nom du fichier pour recuperer la boite");
+	 JFrame frame = new JFrame();
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(frame);
+        if (result == JFileChooser.APPROVE_OPTION) {
+     
+            File file = fileChooser.getSelectedFile();
+            System.out.println("Choisir le fichier: " + file.getAbsolutePath());
+       
+        	String nomFichier = file.getName();
+        	if (nomFichier.endsWith(".bte")) {
+        		Boite boite = UtilitaireFichier.recupererBoite(nomFichier);
+        		return boite;
+        	}
+        	JOptionPane.showMessageDialog(null, "This file is not a .bte file");
+        }
+        	return null;
 	}
 
 	/**
